@@ -68,13 +68,13 @@ export default function Home() {
     <main className="min-h-screen text-gray-900 ">
       {/* Navbar */}
       <nav
-        className={`top-3 mb-10 sticky flex items-center justify-between m-2 p-4 border-[0.04px] rounded-2xl backdrop-blur-xs transition-colors duration-300 ${
+        className={`top-3 mb-3 lg:mb-10 sticky grid lg:flex items-center justify-between m-2 p-4 border-[0.04px] rounded-2xl backdrop-blur-xs transition-colors duration-300 ${
           scrolled
             ? "bg-white/60 border-gray-200"
             : "bg-gray-200/60 border-gray-50"
         }`}
       >
-        <h1 className="text-3xl font-bold">🎬 Movie OMDb</h1>
+        <h1 className="text-xl md:text-3xl font-bold">🎬 Movie OMDb</h1>
         <form className="relative flex items-center" onSubmit={handleSubmit}>
           <input
             type="text"
@@ -119,7 +119,7 @@ export default function Home() {
                     alt={movie.Title}
                     width={300}
                     height={450}
-                    className="rounded-xl mb-2 w-full h-58 object-cover"
+                    className="rounded-xl mb-2 w-full h-52 md:h-58 object-cover"
                   />
                   <h3 className="font-bold text-lg">{movie.Title}</h3>
                   <p className="text-sm text-gray-600">
