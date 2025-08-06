@@ -32,9 +32,9 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-100 text-gray-900">
+    <main className="min-h-screen text-gray-900">
       {/* Navbar */}
-      <nav className="flex items-center justify-between w-full mx-auto p-6 border-b border-gray-300 bg-white/90 backdrop-blur-sm">
+      <nav className="top-3 sticky flex items-center justify-between m-2 p-6 border-gray-300 bg-white/60 backdrop-blur-xs rounded-2xl">
         <h1 className="text-3xl font-bold">🎬 Movie OMDb</h1>
         <form className="relative flex items-center" onSubmit={handleSubmit}>
           <input
@@ -53,24 +53,6 @@ export default function Home() {
           </button>
         </form>
       </nav>
-
-      {/* Description */}
-      <section className="max-w-4xl mx-auto text-center mt-8 mb-4 px-4">
-        <p className="text-lg">
-          A simple movie search application using the OMDb API.
-        </p>
-      </section>
-
-      {/* Logo */}
-      <div className="flex justify-center mb-6">
-        <Image
-          src="/movie-omdb-logo.png"
-          alt="Movie OMDB Logo"
-          width={150}
-          height={150}
-          className="rounded-lg shadow-md"
-        />
-      </div>
 
       {/* Main Content Layout */}
       <section className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 px-4 pb-16">
