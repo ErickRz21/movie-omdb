@@ -100,7 +100,7 @@ export default function Home() {
           <h2 className="text-xl font-semibold mb-2">Search Results</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {loading ? (
-              <p className="text-sm text-gray-500 italic">Loading...</p>
+              <div className="animate-pulse bg-neutral-200 h-64 rounded-xl"></div>
             ) : results.length > 0 ? (
               results.map((movie) => (
                 <div
