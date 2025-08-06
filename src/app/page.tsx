@@ -7,6 +7,10 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [results, setResults] = useState<Movie[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [selectedMovie, setSelectedMovie] = useState<MovieDetails | null>(null);
+
   type Movie = {
     imdbID: string;
     Title: string;
@@ -15,26 +19,44 @@ export default function Home() {
     Poster: string;
   };
 
-  const [results, setResults] = useState<Movie[]>([]);
+  type MovieDetails = {
+    Title: string;
+    Year: string;
+    Rated: string;
+    Released: string;
+    Runtime: string;
+    Genre: string;
+    Director: string;
+    Actors: string;
+    Plot: string;
+    Poster: string;
+    imdbRating: string;
+    Type: string;
+  };
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     if (!searchTerm.trim()) return;
 
-    const res = await fetch(`/api/search?query=${searchTerm}`);
-    const data = await res.json();
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/search?query=${searchTerm}`);
+      const data = await res.json();
 
-    if (data?.Search) {
-      setResults(data.Search);
-    } else {
+      setResults(data?.Search || []);
+      setSelectedMovie(null); // clear sidebar if new search
+    } catch (err) {
+      console.error(err);
       setResults([]);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <main className="min-h-screen text-gray-900">
+    <main className="min-h-screen text-gray-900 ">
       {/* Navbar */}
-      <nav className="top-3 sticky flex items-center justify-between m-2 p-6 border-gray-300 bg-white/60 backdrop-blur-xs rounded-2xl">
+      <nav className="top-3 mb-10 sticky flex items-center justify-between m-2 p-4 border-gray-200 border-[0.04px] bg-gray-200/60 backdrop-blur-xs rounded-2xl">
         <h1 className="text-3xl font-bold">🎬 Movie OMDb</h1>
         <form className="relative flex items-center" onSubmit={handleSubmit}>
           <input
@@ -55,16 +77,23 @@ export default function Home() {
       </nav>
 
       {/* Main Content Layout */}
-      <section className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 px-4 pb-16">
+      <section className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 px-4 pb-16 ">
         {/* Search Results */}
         <div className="md:col-span-2 space-y-4">
           <h2 className="text-xl font-semibold mb-2">Search Results</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {results.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {loading ? (
+              <p className="text-sm text-gray-500 italic">Loading...</p>
+            ) : results.length > 0 ? (
               results.map((movie) => (
                 <div
                   key={movie.imdbID}
-                  className="bg-white p-4 rounded-lg shadow hover:shadow-lg transition"
+                  onClick={async () => {
+                    const res = await fetch(`/api/details?id=${movie.imdbID}`);
+                    const data = await res.json();
+                    setSelectedMovie(data);
+                  }}
+                  className="bg-neutral-100 p-2 rounded-2xl shadow hover:scale-105 duration-300 cursor-pointer"
                 >
                   <Image
                     src={
@@ -73,15 +102,12 @@ export default function Home() {
                     alt={movie.Title}
                     width={300}
                     height={450}
-                    className="rounded mb-2 w-full h-48 object-cover"
+                    className="rounded-xl mb-2 w-full h-58 object-cover"
                   />
                   <h3 className="font-bold text-lg">{movie.Title}</h3>
                   <p className="text-sm text-gray-600">
                     {movie.Year} • {movie.Type}
                   </p>
-                  <button className="mt-2 text-blue-500 hover:underline text-sm">
-                    More Info
-                  </button>
                 </div>
               ))
             ) : (
@@ -93,11 +119,48 @@ export default function Home() {
         </div>
 
         {/* Movie Details Sidebar */}
-        <aside className="bg-white p-4 rounded-lg shadow-md">
-          <h2 className="text-lg font-semibold mb-2">Movie Details</h2>
-          <p className="text-sm text-gray-600">
-            Select a movie to see details here.
-          </p>
+        <aside className="bg-neutral-100 p-4 rounded-2xl shadow-md">
+          {selectedMovie ? (
+            <>
+              <h2 className="text-lg font-semibold mb-1">
+                {selectedMovie.Title}
+              </h2>
+              <p className="text-sm text-gray-600 mb-2">
+                {selectedMovie.Year} • {selectedMovie.Runtime} •{" "}
+                {selectedMovie.Genre}
+              </p>
+              <Image
+                src={
+                  selectedMovie.Poster !== "N/A"
+                    ? selectedMovie.Poster
+                    : "/no-image.png"
+                }
+                alt={selectedMovie.Title}
+                width={250}
+                height={350}
+                className="rounded-xl mb-2 object-cover w-full"
+              />
+              <p className="text-sm text-gray-800 mb-2">{selectedMovie.Plot}</p>
+              <p className="text-xs text-gray-500 mb-1">
+                🎬 Directed by:{" "}
+                <span className="text-gray-700">{selectedMovie.Director}</span>
+              </p>
+              <p className="text-xs text-gray-500 mb-1">
+                🎭 Cast:{" "}
+                <span className="text-gray-700">{selectedMovie.Actors}</span>
+              </p>
+              <p className="text-xs text-gray-500">
+                ⭐ IMDb Rating:{" "}
+                <span className="text-yellow-600">
+                  {selectedMovie.imdbRating}
+                </span>
+              </p>
+            </>
+          ) : (
+            <p className="text-sm text-gray-600">
+              Select a movie to see details here.
+            </p>
+          )}
         </aside>
       </section>
 
