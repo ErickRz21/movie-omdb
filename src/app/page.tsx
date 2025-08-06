@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
@@ -34,6 +34,17 @@ export default function Home() {
     Type: string;
   };
 
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20); // or whatever scroll threshold you want
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     if (!searchTerm.trim()) return;
@@ -56,13 +67,19 @@ export default function Home() {
   return (
     <main className="min-h-screen text-gray-900 ">
       {/* Navbar */}
-      <nav className="top-3 mb-10 sticky flex items-center justify-between m-2 p-4 border-gray-200 border-[0.04px] bg-gray-200/60 backdrop-blur-xs rounded-2xl">
+      <nav
+        className={`top-3 mb-10 sticky flex items-center justify-between m-2 p-4 border-[0.04px] rounded-2xl backdrop-blur-xs transition-colors duration-300 ${
+          scrolled
+            ? "bg-white/60 border-gray-200"
+            : "bg-gray-200/60 border-gray-50"
+        }`}
+      >
         <h1 className="text-3xl font-bold">🎬 Movie OMDb</h1>
         <form className="relative flex items-center" onSubmit={handleSubmit}>
           <input
             type="text"
             placeholder="Search movies..."
-            className="bg-neutral-200 text-black rounded-full py-2 pr-10 pl-4 outline-none focus:ring-2 ring-blue-400"
+            className="bg-neutral-200/70 text-black rounded-full py-2 pr-10 pl-4 outline-none focus:ring-2 ring-indigo-400"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
