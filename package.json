@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@fontsource-variable/sora": "^5.2.6",
     "@fortawesome/fontawesome-svg-core": "^7.0.0",
     "@fortawesome/free-solid-svg-icons": "^7.0.0",
     "@fortawesome/react-fontawesome": "^0.2.3",

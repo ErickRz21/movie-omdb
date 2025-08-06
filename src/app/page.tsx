@@ -68,23 +68,23 @@ export default function Home() {
     <main className="min-h-screen text-gray-900 ">
       {/* Navbar */}
       <nav
-        className={`top-3 mb-3 lg:mb-10 sticky grid lg:flex items-center justify-between m-2 p-4 border-[0.04px] rounded-2xl backdrop-blur-xs transition-colors duration-300 ${
+        className={`top-0 mb-3 lg:mb-10 sticky grid lg:flex items-center justify-between m-0 p-4 border-[0.04px] backdrop-blur-xs transition-all duration-500 ease-in-out z-30 ${
           scrolled
-            ? "bg-white/60 border-gray-200"
-            : "bg-gray-200/60 border-gray-50"
+            ? "bg-white/30 border-gray-200 top-5 m-5 rounded-2xl"
+            : "bg-neutral-200/60 border-transparent"
         }`}
       >
-        <h1 className="text-xl md:text-3xl font-bold">🎬 Movie OMDb</h1>
+        <h1 className="text-xl md:text-3xl font-bold">Movie OMDb</h1>
         <form className="relative flex items-center" onSubmit={handleSubmit}>
           <input
             type="text"
             placeholder="Search movies..."
-            className="bg-neutral-200/70 text-black rounded-full py-2 pr-10 pl-4 outline-none focus:ring-2 ring-indigo-400"
+            className="bg-neutral-300/60 backdrop-blur-xs text-black rounded-full py-2 pr-24 pl-4 outline-none focus:ring ring-gray-400"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <button
-            className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-600 hover:text-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 cursor-pointer"
+            className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-600 hover:text-indigo-500 cursor-pointer"
             type="submit"
             aria-label="Search"
           >
@@ -106,23 +106,37 @@ export default function Home() {
                 <div
                   key={movie.imdbID}
                   onClick={async () => {
-                    const res = await fetch(`/api/details?id=${movie.imdbID}`);
-                    const data = await res.json();
-                    setSelectedMovie(data);
+                    try {
+                      const res = await fetch(
+                        `/api/details?id=${movie.imdbID}`
+                      );
+                      if (!res.ok)
+                        throw new Error("Failed to fetch movie details");
+
+                      const data = await res.json();
+                      setSelectedMovie(data);
+                    } catch (error) {
+                      console.error("Error fetching movie details:", error);
+                      alert("Sorry! Couldn't load movie details.");
+                    }
                   }}
-                  className="bg-neutral-100 p-2 rounded-2xl shadow hover:scale-105 duration-300 cursor-pointer"
+                  className="bg-neutral-100 p-2 rounded-2xl shadow-md hover:scale-105 duration-300 cursor-pointer"
                 >
-                  <Image
+                  <img
                     src={
-                      movie.Poster !== "N/A" ? movie.Poster : "/no-image.png"
+                      movie.Poster !== "N/A" ? movie.Poster : "/placeholder.jpg"
                     }
                     alt={movie.Title}
                     width={300}
                     height={450}
-                    className="rounded-xl mb-2 w-full h-52 md:h-58 object-cover"
+                    className="rounded-xl mb-2 w-full h-58 object-cover"
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).src =
+                        "/placeholder.jpg";
+                    }}
                   />
                   <h3 className="font-bold text-lg">{movie.Title}</h3>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-gray-600 capitalize">
                     {movie.Year} • {movie.Type}
                   </p>
                 </div>
@@ -136,41 +150,62 @@ export default function Home() {
         </div>
 
         {/* Movie Details Sidebar */}
-        <aside className="bg-neutral-100 p-4 rounded-2xl shadow-md">
+        <aside className="bg-neutral-100 p-4 rounded-2xl shadow-md text-base">
           {selectedMovie ? (
             <>
               <h2 className="text-lg font-semibold mb-1">
                 {selectedMovie.Title}
               </h2>
-              <p className="text-sm text-gray-600 mb-2">
+              <p className="text-gray-600 mb-2 capitalize">
                 {selectedMovie.Year} • {selectedMovie.Runtime} •{" "}
                 {selectedMovie.Genre}
               </p>
-              <Image
+              <img
                 src={
                   selectedMovie.Poster !== "N/A"
                     ? selectedMovie.Poster
-                    : "/no-image.png"
+                    : "/placeholder.jpg"
                 }
                 alt={selectedMovie.Title}
-                width={250}
-                height={350}
-                className="rounded-xl mb-2 object-cover w-full"
+                width={300}
+                height={450}
+                className="rounded-xl mb-2 w-full max-h-[500px] object-fit"
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).src =
+                    "/placeholder.jpg";
+                }}
               />
-              <p className="text-sm text-gray-800 mb-2">{selectedMovie.Plot}</p>
-              <p className="text-xs text-gray-500 mb-1">
+              <p className="text-gray-800 mb-2">{selectedMovie.Plot}</p>
+              <p className="text-gray-500 mb-1">
                 🎬 Directed by:{" "}
                 <span className="text-gray-700">{selectedMovie.Director}</span>
               </p>
-              <p className="text-xs text-gray-500 mb-1">
+              <p className="text-gray-500 mb-1">
                 🎭 Cast:{" "}
                 <span className="text-gray-700">{selectedMovie.Actors}</span>
               </p>
-              <p className="text-xs text-gray-500">
+              <p className="text-gray-500">
                 ⭐ IMDb Rating:{" "}
                 <span className="text-yellow-600">
                   {selectedMovie.imdbRating}
                 </span>
+              </p>
+              {selectedMovie.Type === "movie" && (
+                <p className="text-gray-500">
+                  🍅 Rotten Tomatoes:{" "}
+                  <span className="text-red-600">
+                    {
+                      // Try to find Rotten Tomatoes rating in Ratings array if present
+                      (selectedMovie as any).Ratings?.find(
+                        (r: any) => r.Source === "Rotten Tomatoes"
+                      )?.Value || "N/A"
+                    }
+                  </span>
+                </p>
+              )}
+              <p className="text-gray-500">
+                Rated:{" "}
+                <span className="text-gray-700">{selectedMovie.Rated}</span>
               </p>
             </>
           ) : (
@@ -182,7 +217,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="text-center text-sm text-gray-500 py-4 border-t border-gray-300">
+      <footer className="text-center text-sm text-gray-500 py-8 border-t border-gray-300">
         © 2025 Salem’s OMDb App | Built with ❤️ using Next.js & Tailwind CSS
       </footer>
     </main>
