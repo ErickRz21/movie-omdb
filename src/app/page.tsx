@@ -64,6 +64,12 @@ export default function Home() {
     }
   };
 
+  const uniqueResults = results.filter(
+    (movie, index, self) =>
+      index === self.findIndex((m) => m.imdbID === movie.imdbID)
+  );
+
+
   return (
     <main className="min-h-screen text-gray-900 ">
       {/* Navbar */}
@@ -102,7 +108,7 @@ export default function Home() {
             {loading ? (
               <div className="animate-pulse bg-neutral-200 h-64 rounded-xl"></div>
             ) : results.length > 0 ? (
-              results.map((movie) => (
+              uniqueResults.map((movie) => (
                 <div
                   key={movie.imdbID}
                   onClick={async () => {
