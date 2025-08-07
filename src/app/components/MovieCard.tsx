@@ -23,6 +23,7 @@ export default function MovieCard({
           (e.currentTarget as HTMLImageElement).src = "/placeholder.jpg";
         }}
         unoptimized={movie.Poster.startsWith("http")} // optionally disable Next optimization for external URLs
+        loading="lazy"
       />
       <h3 className="font-bold text-lg">{movie.Title}</h3>
       <p className="text-sm text-gray-600 capitalize">
