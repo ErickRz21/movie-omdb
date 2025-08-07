@@ -27,24 +27,24 @@ export default function MovieDetailsComponent({
         alt={selectedMovie.Title}
         width={300}
         height={450}
-        className="rounded-xl mb-2 w-full max-h-[500px] object-fit"
+        className="rounded-xl w-full max-h-[500px] object-fit"
         onError={(e) => {
           (e.currentTarget as HTMLImageElement).src = "/placeholder.jpg";
         }}
       />
-      <p className="text-gray-800 mb-2">{selectedMovie.Plot}</p>
-      <p className="text-gray-500 mb-1">
+      <p className="text-black my-2">{selectedMovie.Plot}</p>
+      <p className="text-info">
         🎬 Directed by:{" "}
-        <span className="text-gray-700">{selectedMovie.Director}</span>
+        <span className="text-black">{selectedMovie.Director}</span>
       </p>
-      <p className="text-gray-500 mb-1">
-        🎭 Cast: <span className="text-gray-700">{selectedMovie.Actors}</span>
+      <p className="text-info">
+        🎭 Cast: <span className="text-black">{selectedMovie.Actors}</span>
       </p>
-      <p className="text-gray-500">
+      <p className="text-info">
         ⭐ IMDb Rating:{" "}
         <span className="text-yellow-600">{selectedMovie.imdbRating}</span>
       </p>
-      <p className="text-gray-500">
+      <p className="text-info">
         🍅 Rotten Tomatoes:{" "}
         <span className="text-red-600">
           {
@@ -54,7 +54,7 @@ export default function MovieDetailsComponent({
           }
         </span>
       </p>
-      <p className="text-gray-500">
+      <p className="text-info">
         Rated: <span className="text-gray-700">{selectedMovie.Rated}</span>
       </p>
     </>

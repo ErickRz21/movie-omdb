@@ -25,3 +25,7 @@ body {
   color: var(--foreground);
   font-family: 'Sora Variable', sans-serif;
 }
+
+.text-info {
+  @apply text-gray-500 mb-1;
+}
