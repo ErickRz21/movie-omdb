@@ -1,4 +1,5 @@
 import { MovieDetails } from "../types/movie";
+import Image from "next/image";
 
 export default function MovieDetailsComponent({
   selectedMovie,
@@ -18,7 +19,7 @@ export default function MovieDetailsComponent({
       <p className="text-gray-600 mb-2 capitalize">
         {selectedMovie.Year} • {selectedMovie.Runtime} • {selectedMovie.Genre}
       </p>
-      <img
+      <Image
         src={
           selectedMovie.Poster !== "N/A"
             ? selectedMovie.Poster
@@ -27,10 +28,14 @@ export default function MovieDetailsComponent({
         alt={selectedMovie.Title}
         width={300}
         height={450}
-        className="rounded-xl w-full max-h-[500px] object-fit"
+        className="rounded-xl w-full max-h-[500px] object-cover"
         onError={(e) => {
-          (e.currentTarget as HTMLImageElement).src = "/placeholder.jpg";
+          const target = e.currentTarget as HTMLImageElement;
+          if (!target.src.endsWith("/placeholder.jpg")) {
+            target.src = "/placeholder.jpg";
+          }
         }}
+        unoptimized // since external URLs might not be whitelisted in next.config.js
       />
       <p className="text-black my-2">{selectedMovie.Plot}</p>
       <p className="text-info">
@@ -47,11 +52,9 @@ export default function MovieDetailsComponent({
       <p className="text-info">
         🍅 Rotten Tomatoes:{" "}
         <span className="text-red-600">
-          {
-            (selectedMovie as any).Ratings?.find(
-              (r: any) => r.Source === "Rotten Tomatoes"
-            )?.Value || "N/A"
-          }
+          {(selectedMovie as any).Ratings?.find(
+            (r: any) => r.Source === "Rotten Tomatoes"
+          )?.Value || "N/A"}
         </span>
       </p>
       <p className="text-info">
