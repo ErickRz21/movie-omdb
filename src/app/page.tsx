@@ -48,7 +48,7 @@ export default function Home() {
       <section className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 pb-16 md:grid-cols-3">
         <div className="space-y-4 md:col-span-2">
           <h2 className="mb-2 text-xl font-semibold">Search Results</h2>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-4">
             {loading ? (
               <div className="h-64 animate-pulse rounded-xl bg-neutral-200"></div>
             ) : (
