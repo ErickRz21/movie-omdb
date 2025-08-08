@@ -21,7 +21,7 @@ export default function Navbar({
           : "border-transparent bg-neutral-200/80"
       }`}
     >
-      <h1 className="mb-2 text-center text-2xl font-bold md:mb-0 md:text-3xl text-black">
+      <h1 className="mb-2 text-center text-2xl font-bold text-black md:mb-0 md:text-3xl">
         Movie OMDb
       </h1>
       <form

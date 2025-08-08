@@ -71,7 +71,7 @@ export default function Home() {
       <section className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-3 pb-16 md:grid-cols-3">
         <div className="space-y-4 md:col-span-2">
           <h2 className="mb-2 text-xl font-semibold">Search Results</h2>
-          <div className="grid grid-cols-1 gap-2 md:gap-4 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 md:gap-4 2xl:grid-cols-4">
             {loading ? (
               <div className="h-64 animate-pulse rounded-xl bg-neutral-200"></div>
             ) : (
@@ -113,7 +113,7 @@ export default function Home() {
             onClick={() => setShowModal(false)} // Close on background click
           >
             <div
-              className="relative h-full max-h-screen w-full rounded-t-3xl bg-white/80 p-4 shadow-lg backdrop-blur-md"
+              className="relative h-full max-h-screen w-full overflow-y-auto rounded-t-3xl bg-white/80 p-4 shadow-lg backdrop-blur-md"
               onClick={(e) => e.stopPropagation()} // Prevent click from closing when clicking inside
             >
               <button
