@@ -26,7 +26,11 @@ export default function Navbar({
       </h1>
       <form
         className="relative mx-auto flex w-full max-w-sm items-center md:max-w-md lg:mx-0 lg:max-w-lg"
-        onSubmit={handleSubmit}
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit(e);
+          (e.currentTarget.querySelector("input") as HTMLInputElement)?.blur(); // hide keyboard
+        }}
       >
         <input
           type="text"
