@@ -15,13 +15,13 @@ export default function Navbar({
 }) {
   return (
     <nav
-      className={`sticky top-0 z-30 m-0 mb-3 items-center justify-between border-[0.04px] p-4 backdrop-blur-xs transition-all duration-500 ease-in-out lg:mb-10 lg:flex ${
+      className={`sticky top-0 z-30 m-0 mb-3 items-center justify-between p-4 backdrop-blur-xs transition-all duration-500 ease-in-out lg:mb-10 lg:flex ${
         scrolled
-          ? "top-2 mx-4 rounded-2xl border-gray-200 bg-white/40 md:top-5 md:mx-5"
-          : "border-transparent bg-neutral-200/60"
+          ? "top-2 mx-3 rounded-2xl bg-neutral-300/50 md:top-5 md:mx-5"
+          : "border-transparent bg-neutral-200/80"
       }`}
     >
-      <h1 className="mb-2 text-center text-2xl font-bold md:mb-0 md:text-3xl">
+      <h1 className="mb-2 text-center text-2xl font-bold md:mb-0 md:text-3xl text-black">
         Movie OMDb
       </h1>
       <form

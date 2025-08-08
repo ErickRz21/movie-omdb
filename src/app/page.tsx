@@ -5,6 +5,9 @@ import Navbar from "./components/Navbar";
 import MovieCard from "./components/MovieCard";
 import MovieDetailsComponent from "./components/MovieDetails";
 import { Movie, MovieDetails } from "./types/movie";
+import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -12,12 +15,27 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState<MovieDetails | null>(null);
   const [scrolled, setScrolled] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    const isMobile = window.innerWidth < 768; // Tailwind's md breakpoint
+
+    if (showModal && isMobile) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [showModal]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,6 +54,11 @@ export default function Home() {
     }
   };
 
+  // Open modal on mobile when movie is selected
+  React.useEffect(() => {
+    if (selectedMovie) setShowModal(true);
+  }, [selectedMovie]);
+
   return (
     <main className="min-h-screen text-gray-900">
       <Navbar
@@ -45,10 +68,10 @@ export default function Home() {
         scrolled={scrolled}
       />
 
-      <section className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 pb-16 md:grid-cols-3">
+      <section className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-3 pb-16 md:grid-cols-3">
         <div className="space-y-4 md:col-span-2">
           <h2 className="mb-2 text-xl font-semibold">Search Results</h2>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-2 md:gap-4 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-4">
             {loading ? (
               <div className="h-64 animate-pulse rounded-xl bg-neutral-200"></div>
             ) : (
@@ -79,9 +102,30 @@ export default function Home() {
           </div>
         </div>
 
-        <aside className="rounded-2xl bg-neutral-100 p-4 text-base shadow-md">
+        <aside className="hidden rounded-2xl bg-neutral-100 p-3 text-base shadow-md md:block">
           <MovieDetailsComponent selectedMovie={selectedMovie} />
         </aside>
+
+        {/* Mobile modal */}
+        {showModal && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center md:hidden"
+            onClick={() => setShowModal(false)} // Close on background click
+          >
+            <div
+              className="relative h-full max-h-screen w-full rounded-t-3xl bg-white/80 p-4 shadow-lg backdrop-blur-md"
+              onClick={(e) => e.stopPropagation()} // Prevent click from closing when clicking inside
+            >
+              <button
+                onClick={() => setShowModal(false)}
+                className="absolute top-4 right-3 text-gray-500 hover:text-black"
+              >
+                <FontAwesomeIcon icon={faXmarkCircle} className="text-3xl" />
+              </button>
+              <MovieDetailsComponent selectedMovie={selectedMovie} />
+            </div>
+          </div>
+        )}
       </section>
 
       <footer className="border-t border-gray-300 py-8 text-center text-sm text-gray-500">

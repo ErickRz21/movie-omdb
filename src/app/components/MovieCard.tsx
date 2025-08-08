@@ -11,7 +11,7 @@ export default function MovieCard({
   return (
     <div
       onClick={onClick}
-      className="cursor-pointer rounded-2xl bg-neutral-100 p-2 shadow-md duration-300 hover:scale-105"
+      className="cursor-pointer rounded-2xl bg-neutral-100 p-2 shadow-md duration-300 hover:scale-95"
     >
       <Image
         src={movie.Poster !== "N/A" ? movie.Poster : "/placeholder.jpg"}
