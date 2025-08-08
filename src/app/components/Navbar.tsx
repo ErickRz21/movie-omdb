@@ -15,29 +15,29 @@ export default function Navbar({
 }) {
   return (
     <nav
-      className={`top-0 mb-3 lg:mb-10 sticky lg:flex items-center justify-between m-0 p-4 border-[0.04px] backdrop-blur-xs transition-all duration-500 ease-in-out z-30 ${
+      className={`sticky top-0 z-30 m-0 mb-3 items-center justify-between border-[0.04px] p-4 backdrop-blur-xs transition-all duration-500 ease-in-out lg:mb-10 lg:flex ${
         scrolled
-          ? "bg-white/40 border-gray-200 top-2 md:top-5 mx-4 md:mx-5 rounded-2xl"
-          : "bg-neutral-200/60 border-transparent"
+          ? "top-2 mx-4 rounded-2xl border-gray-200 bg-white/40 md:top-5 md:mx-5"
+          : "border-transparent bg-neutral-200/60"
       }`}
     >
-      <h1 className="text-2xl md:text-3xl font-bold text-center mb-2 md:mb-0">
+      <h1 className="mb-2 text-center text-2xl font-bold md:mb-0 md:text-3xl">
         Movie OMDb
       </h1>
       <form
-        className="relative flex items-center w-full max-w-sm md:max-w-md lg:max-w-lg mx-auto lg:mx-0"
+        className="relative mx-auto flex w-full max-w-sm items-center md:max-w-md lg:mx-0 lg:max-w-lg"
         onSubmit={handleSubmit}
       >
         <input
           type="text"
           placeholder="Search movies..."
-          className="bg-neutral-300/80 backdrop-blur-xs text-black rounded-full py-2 pr-12 pl-4 outline-none focus:ring ring-gray-400 w-full text-base sm:text-lg transition"
+          className="w-full rounded-full bg-neutral-300/80 py-2 pr-12 pl-4 text-base text-black ring-gray-400 backdrop-blur-xs transition outline-none focus:ring sm:text-lg"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           autoComplete="off"
         />
         <button
-          className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-600 hover:text-indigo-500 cursor-pointer p-2"
+          className="absolute top-1/2 right-2 -translate-y-1/2 cursor-pointer p-2 text-gray-600 hover:text-indigo-500"
           type="submit"
         >
           <FontAwesomeIcon icon={faMagnifyingGlass} />

@@ -45,17 +45,17 @@ export default function Home() {
         scrolled={scrolled}
       />
 
-      <section className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 px-4 pb-16">
-        <div className="md:col-span-2 space-y-4">
-          <h2 className="text-xl font-semibold mb-2">Search Results</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <section className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 pb-16 md:grid-cols-3">
+        <div className="space-y-4 md:col-span-2">
+          <h2 className="mb-2 text-xl font-semibold">Search Results</h2>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {loading ? (
-              <div className="animate-pulse bg-neutral-200 h-64 rounded-xl"></div>
+              <div className="h-64 animate-pulse rounded-xl bg-neutral-200"></div>
             ) : (
               results
                 .filter(
                   (movie, idx, self) =>
-                    idx === self.findIndex((m) => m.imdbID === movie.imdbID)
+                    idx === self.findIndex((m) => m.imdbID === movie.imdbID),
                 )
                 .map((movie) => (
                   <MovieCard
@@ -64,7 +64,7 @@ export default function Home() {
                     onClick={async () => {
                       try {
                         const res = await fetch(
-                          `/api/details?id=${movie.imdbID}`
+                          `/api/details?id=${movie.imdbID}`,
                         );
                         if (!res.ok) throw new Error("Failed to fetch");
                         const data = await res.json();
@@ -79,12 +79,12 @@ export default function Home() {
           </div>
         </div>
 
-        <aside className="bg-neutral-100 p-4 rounded-2xl shadow-md text-base">
+        <aside className="rounded-2xl bg-neutral-100 p-4 text-base shadow-md">
           <MovieDetailsComponent selectedMovie={selectedMovie} />
         </aside>
       </section>
 
-      <footer className="text-center text-sm text-gray-500 py-8 border-t border-gray-300">
+      <footer className="border-t border-gray-300 py-8 text-center text-sm text-gray-500">
         © 2025 Salem’s OMDb App | Built with ❤️ using Next.js & Tailwind CSS
       </footer>
     </main>

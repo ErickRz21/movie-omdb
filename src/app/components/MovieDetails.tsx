@@ -15,8 +15,8 @@ export default function MovieDetailsComponent({
 
   return (
     <>
-      <h2 className="text-lg font-semibold mb-1">{selectedMovie.Title}</h2>
-      <p className="text-gray-600 mb-2 capitalize">
+      <h2 className="mb-1 text-lg font-semibold">{selectedMovie.Title}</h2>
+      <p className="mb-2 text-gray-600 capitalize">
         {selectedMovie.Year} • {selectedMovie.Runtime} • {selectedMovie.Genre}
       </p>
       <Image
@@ -28,7 +28,7 @@ export default function MovieDetailsComponent({
         alt={selectedMovie.Title}
         width={300}
         height={450}
-        className="rounded-xl w-full max-h-[500px] object-cover"
+        className="max-h-[500px] w-full rounded-xl object-cover"
         onError={(e) => {
           const target = e.currentTarget as HTMLImageElement;
           if (!target.src.endsWith("/placeholder.jpg")) {
@@ -37,7 +37,7 @@ export default function MovieDetailsComponent({
         }}
         unoptimized // since external URLs might not be whitelisted in next.config.js
       />
-      <p className="text-black my-2">{selectedMovie.Plot}</p>
+      <p className="my-2 text-black">{selectedMovie.Plot}</p>
       <p className="text-info">
         🎬 Directed by:{" "}
         <span className="text-black">{selectedMovie.Director}</span>
@@ -53,7 +53,7 @@ export default function MovieDetailsComponent({
         🍅 Rotten Tomatoes:{" "}
         <span className="text-red-600">
           {(selectedMovie as any).Ratings?.find(
-            (r: any) => r.Source === "Rotten Tomatoes"
+            (r: any) => r.Source === "Rotten Tomatoes",
           )?.Value || "N/A"}
         </span>
       </p>
