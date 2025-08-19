@@ -35,13 +35,13 @@ export default function Navbar({
         <input
           type="text"
           placeholder="Search movies..."
-          className="w-full rounded-full bg-neutral-300/80 py-2 pr-12 pl-4 text-base text-black ring-gray-400 backdrop-blur-xs transition outline-none focus:ring sm:text-lg"
+          className="w-full rounded-full bg-neutral-300/80 py-2 pr-12 pl-4 text-base text-black ring-pink-400 backdrop-blur-xs transition outline-none focus:ring sm:text-lg hover:bg-cyan-200/80 duration-300"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           autoComplete="off"
         />
         <button
-          className="absolute top-1/2 right-2 -translate-y-1/2 cursor-pointer p-2 text-gray-600 hover:text-indigo-500"
+          className="absolute top-1/2 right-2 -translate-y-1/2 cursor-pointer p-2 text-gray-600 hover:text-pink-400"
           type="submit"
         >
           <FontAwesomeIcon icon={faMagnifyingGlass} />

@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Movie OMDB",
+  title: "Movie | Search",
   description: "Search and explore movies using OMDb API",
 };
 
